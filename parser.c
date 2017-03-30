@@ -92,6 +92,14 @@ void parse_file ( char * filename,
     double zvals[4];
     struct matrix *tmp;
     double r;
+    double r1;
+    double r2;
+    double cx;
+    double cy;
+    double cz;
+    double h;
+    double w;
+    double d;
     double theta;
     char axis;
     int type;
@@ -143,6 +151,42 @@ void parse_file ( char * filename,
       add_edge(edges, xvals[0], yvals[0], zvals[0],
 	       xvals[1], yvals[1], zvals[1]);      
     }//end line
+    else if ( strncmp(line, "box", strlen(line)) == 0 ) {
+      fgets(line, sizeof(line), f);
+      //printf("LINE\t%s", line);
+
+      sscanf(line, "%lf %lf %lf %lf %lf %lf",
+	     &cx, &cy, &cz,
+	     &h, &w, &d);
+      /*printf("%lf %lf %lf %lf %lf %lf",
+	xvals[0], yvals[0], zvals[0],
+	xvals[1], yvals[1], zvals[1]) */
+      add_box(edges, cx,cy,cz,h,w,d);      
+    }
+    else if ( strncmp(line, "torus", strlen(line)) == 0 ) {
+      fgets(line, sizeof(line), f);
+      //printf("LINE\t%s", line);
+
+      sscanf(line, "%lf %lf %lf %lf %lf",
+	     &cx, &cy, &cz,
+	     &r1, &r2);
+      /*printf("%lf %lf %lf %lf %lf %lf",
+	xvals[0], yvals[0], zvals[0],
+	xvals[1], yvals[1], zvals[1]) */
+      add_torus(edges, cx,cy,cz,r1,r2, 0.001);      
+    }//end line
+    //end line
+    else if ( strncmp(line, "sphere", strlen(line)) == 0 ) {
+      fgets(line, sizeof(line), f);
+      //printf("LINE\t%s", line);
+
+      sscanf(line, "%lf %lf %lf %lf",
+	     &cx,&cy,&cz,&r);
+      /*printf("%lf %lf %lf %lf %lf %lf",
+	xvals[0], yvals[0], zvals[0],
+	xvals[1], yvals[1], zvals[1]) */
+      add_sphere(edges,cx,cy,cz,r,0.001);      
+    }//end line
 
     else if ( strncmp(line, "scale", strlen(line)) == 0 ) {
       fgets(line, sizeof(line), f);
@@ -154,6 +198,7 @@ void parse_file ( char * filename,
       tmp = make_scale( xvals[0], yvals[0], zvals[0]);
       matrix_mult(tmp, transform);
     }//end scale
+    
 
     else if ( strncmp(line, "move", strlen(line)) == 0 ) {
       fgets(line, sizeof(line), f);
@@ -199,7 +244,12 @@ void parse_file ( char * filename,
       clear_screen(s);
       draw_lines(edges, s, c);
       display( s );
-    }//end display
+    }
+    else if ( strncmp(line, "clear", strlen(line)) == 0 ) {
+      //printf("DISPLAY\t%s", line);
+      clear_screen(s);
+      edges = new_matrix(4,4);
+    }//end display//end display
 
     else if ( strncmp(line, "save", strlen(line)) == 0 ) {
       fgets(line, sizeof(line), f);
