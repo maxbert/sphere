@@ -173,7 +173,7 @@ void parse_file ( char * filename,
       /*printf("%lf %lf %lf %lf %lf %lf",
 	xvals[0], yvals[0], zvals[0],
 	xvals[1], yvals[1], zvals[1]) */
-      add_torus(edges, cx,cy,cz,r1,r2, 0.001);      
+      add_torus(edges, cx,cy,cz,r1,r2, 0.01);      
     }//end line
     //end line
     else if ( strncmp(line, "sphere", strlen(line)) == 0 ) {
@@ -185,7 +185,7 @@ void parse_file ( char * filename,
       /*printf("%lf %lf %lf %lf %lf %lf",
 	xvals[0], yvals[0], zvals[0],
 	xvals[1], yvals[1], zvals[1]) */
-      add_sphere(edges,cx,cy,cz,r,0.001);      
+      add_sphere(edges,cx,cy,cz,r,0.01);      
     }//end line
 
     else if ( strncmp(line, "scale", strlen(line)) == 0 ) {
